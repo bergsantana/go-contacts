@@ -46,7 +46,7 @@ func (h *ContactHandler) CreateContact(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	// Sanitization fields
+	// Sanitiazação de campos
 	contact.Name = sanitize.StrictHTML(contact.Name)
 	contact.Email = sanitize.StrictHTML(contact.Email)
 	contact.Phone = sanitize.StrictHTML(contact.Phone)
@@ -63,11 +63,11 @@ func (h *ContactHandler) UpdateContact(c *fiber.Ctx) error {
 	if err := c.BodyParser(&contact); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 	}
-	// Sanitize fields
+	// Sanitiazação de campos
 	contact.Name = sanitize.StrictHTML(contact.Name)
 	contact.Email = sanitize.StrictHTML(contact.Email)
 	contact.Phone = sanitize.StrictHTML(contact.Phone)
-	
+
 	contact.ID = uint(id)
 	if err := h.usecase.UpdateContact(&contact); err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})

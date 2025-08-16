@@ -7,7 +7,7 @@ import (
 
 // IsValidCPF valida o CPF calculando os dois ultimos digitos e checando se estão de acordo
 func IsValidCPF(cpf string) bool {
-	// Remove non-digits
+	// Usar apenas digitos do CPF
 	re := regexp.MustCompile(`[^0-9]`)
 	cpf = re.ReplaceAllString(cpf, "")
 
@@ -16,6 +16,7 @@ func IsValidCPF(cpf string) bool {
 		return false
 	}
 
+	// Calculo do primeiro digito
 	sum := 0
 	for i := 0; i < 9; i++ {
 		digit, _ := strconv.Atoi(string(cpf[i]))

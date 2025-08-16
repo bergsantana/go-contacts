@@ -25,20 +25,38 @@ func (uc *ContactUsecase) GetContactByID(id uint) (*entity.Contact, error) {
 }
 
 func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
+	// Valida CPF
 	if contact.CPF != nil && *contact.CPF != "" {
 		if !validate.IsValidCPF(*contact.CPF) {
 			return errors.New("invalid CPF")
+		}
+	}
+
+	// Validata CNPJ
+	if contact.CNPJ != nil && *contact.CNPJ != "" {
+		if !validate.IsValidCNPJ(*contact.CNPJ) {
+			return errors.New("invalid CNPJ")
 		}
 	}
 	return uc.repo.Create(contact)
 }
 
 func (uc *ContactUsecase) UpdateContact(contact *entity.Contact) error {
+
+	// Valida CPF
 	if contact.CPF != nil && *contact.CPF != "" {
 		if !validate.IsValidCPF(*contact.CPF) {
 			return errors.New("invalid CPF")
 		}
 	}
+
+	// Validata CNPJ
+	if contact.CNPJ != nil && *contact.CNPJ != "" {
+		if !validate.IsValidCNPJ(*contact.CNPJ) {
+			return errors.New("invalid CNPJ")
+		}
+	}
+
 	return uc.repo.Update(contact)
 }
 
