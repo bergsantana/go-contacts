@@ -38,3 +38,30 @@ func (r *contactGormRepository) Update(contact *entity.Contact) error {
 func (r *contactGormRepository) Delete(id uint) error {
 	return r.db.Delete(&entity.Contact{}, id).Error
 }
+
+func (r *contactGormRepository) GetByCPF(cpf string) (*entity.Contact, error) {
+	var contact entity.Contact
+	result := r.db.Where("cpf = ?", cpf).First(&contact)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &contact, nil
+}
+
+func (r *contactGormRepository) GetByCNPJ(cnpj string) (*entity.Contact, error) {
+	var contact entity.Contact
+	result := r.db.Where("cnpj = ?", cnpj).First(&contact)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &contact, nil
+}
+
+func (r *contactGormRepository) GetByEmail(email string) (*entity.Contact, error) {
+	var contact entity.Contact
+	result := r.db.Where("email = ?", email).First(&contact)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &contact, nil
+}

@@ -18,6 +18,8 @@ func NewContactHandler(app *fiber.App, uc *usecase.ContactUsecase) {
 
 	app.Get("/contacts", handler.GetContacts)
 	app.Get("/contacts/:id", handler.GetContact)
+	app.Get("/contacts/cpf/:cpf", handler.GetByCPF)
+	app.Get("/contacts/cnpj/:cnpj", handler.GetByCNPJ)
 	app.Post("/contacts", handler.CreateContact)
 	app.Put("/contacts/:id", handler.UpdateContact)
 	app.Delete("/contacts/:id", handler.DeleteContact)
@@ -36,6 +38,24 @@ func (h *ContactHandler) GetContact(c *fiber.Ctx) error {
 	contact, err := h.usecase.GetContactByID(uint(id))
 	if err != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "Contact not found"})
+	}
+	return c.JSON(contact)
+}
+
+func (h *ContactHandler) GetByCPF(c *fiber.Ctx) error {
+	cpf := c.Params("cpf")
+	contact, err := h.usecase.GetByCPF(cpf)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Contact not found"})
+	}
+	return c.JSON(contact)
+}
+
+func (h *ContactHandler) GetByCNPJ(c *fiber.Ctx) error {
+	cnpj := c.Params("cnpj")
+	contact, err := h.usecase.GetByCNPJ(cnpj)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Contact not found"})
 	}
 	return c.JSON(contact)
 }

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/bergsantana/go-contacts/internal/delivery/http"
@@ -9,12 +11,16 @@ import (
 	"github.com/bergsantana/go-contacts/internal/usecase"
 	"github.com/bergsantana/go-contacts/pkg/database"
 	"github.com/bergsantana/go-contacts/pkg/middleware"
+	"github.com/bergsantana/go-contacts/pkg/seed"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
+	"gorm.io/gorm"
 )
 
 func main() {
 	db := database.NewSQLiteDB()
+	handleArgs(db)
+
 	repo := repository.NewContactGormRepository(db)
 	uc := usecase.NewContactUsecase(repo)
 
@@ -44,4 +50,18 @@ func main() {
 	fmt.Println()
 
 	app.Listen(":3000")
+}
+
+func handleArgs(db *gorm.DB) {
+	flag.Parse()
+	args := flag.Args()
+
+	if len(args) >= 1 {
+		fmt.Println("ARGS", args)
+		switch args[0] {
+		case "seed":
+			seed.SeedContacts(db)
+			os.Exit(0)
+		}
+	}
 }

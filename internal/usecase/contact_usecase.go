@@ -27,8 +27,22 @@ func (uc *ContactUsecase) GetContactByID(id uint) (*entity.Contact, error) {
 	return uc.repo.GetByID(id)
 }
 
+func (uc *ContactUsecase) GetByCPF(cpf string) (*entity.Contact, error) {
+	if cpf == "" {
+		return nil, errors.New("cpf cannot be empty")
+	}
+	return uc.repo.GetByCPF(cpf)
+}
+
+func (uc *ContactUsecase) GetByCNPJ(cnpj string) (*entity.Contact, error) {
+	if cnpj == "" {
+		return nil, errors.New("cnpj cannot be empty")
+	}
+	return uc.repo.GetByCNPJ(cnpj)
+}
+
 func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
-	err := cleanAndValidateFields(contact)
+	err := cleanAndValidateFields(contact, uc)
 	if err != nil {
 		fmt.Println("Erro ao atualizar contato: ", err)
 		return err
@@ -38,7 +52,7 @@ func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
 
 func (uc *ContactUsecase) UpdateContact(contact *entity.Contact) error {
 
-	err := cleanAndValidateFields(contact)
+	err := cleanAndValidateFields(contact, uc)
 	if err != nil {
 		fmt.Println("Erro ao atualizar contato: ", err)
 		return err
@@ -51,7 +65,7 @@ func (uc *ContactUsecase) DeleteContact(id uint) error {
 	return uc.repo.Delete(id)
 }
 
-func cleanAndValidateFields(contact *entity.Contact) error {
+func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase) error {
 	// Sanitizar dados para prevenir SQL Injection
 	contact.Name = sanitize.SanitizeSQLInput(contact.Name)
 	contact.Email = sanitize.SanitizeSQLInput(contact.Email)
@@ -62,14 +76,22 @@ func cleanAndValidateFields(contact *entity.Contact) error {
 	// Valida CPF
 	if contact.CPF != nil && *contact.CPF != "" {
 		if !validate.IsValidCPF(*contact.CPF) {
-			return errors.New("invalid CPF")
+			return errors.New("CPF invalido: " + *contact.CPF)
+		}
+		existingCPF, _ := uc.repo.GetByCPF(*contact.CPF)
+		if existingCPF != nil {
+			return errors.New("CPF já utilizado")
 		}
 	}
 
 	// Validata CNPJ
 	if contact.CNPJ != nil && *contact.CNPJ != "" {
 		if !validate.IsValidCNPJ(*contact.CNPJ) {
-			return errors.New("invalid CNPJ")
+			return errors.New("CNPJ INVALIDO: " + *contact.CNPJ)
+		}
+		existingCNPJ, _ := uc.repo.GetByCNPJ(*contact.CNPJ)
+		if existingCNPJ != nil {
+			return errors.New("CNPJ já utilizado")
 		}
 	}
 
@@ -80,6 +102,12 @@ func cleanAndValidateFields(contact *entity.Contact) error {
 			return err
 		}
 		contact.Phone = formatted
+	}
+
+	// Certifique que o email é único
+	existing, _ := uc.repo.GetByEmail(contact.Email)
+	if existing != nil {
+		return errors.New("email já utilizado")
 	}
 
 	return nil
