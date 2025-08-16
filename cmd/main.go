@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/bergsantana/go-contacts/internal/delivery/http"
 	"github.com/bergsantana/go-contacts/internal/repository"
@@ -9,6 +10,7 @@ import (
 	"github.com/bergsantana/go-contacts/pkg/database"
 	"github.com/bergsantana/go-contacts/pkg/middleware"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 )
 
 func main() {
@@ -20,6 +22,18 @@ func main() {
 
 	// Middleware
 	app.Use(middleware.SanitizeJSONBody())
+	app.Use(limiter.New(limiter.Config{
+		Max:        5,               // Máximo de requests for minuto
+		Expiration: 1 * time.Minute, // Tempo
+		KeyGenerator: func(c *fiber.Ctx) string {
+			return c.IP()
+		},
+		LimitReached: func(c *fiber.Ctx) error {
+			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+				"error": "Too many requests. Please try again later.",
+			})
+		},
+	}))
 
 	// Rotas
 	http.NewContactHandler(app, uc)

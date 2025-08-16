@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// SanitizeSQLInput remove padrões de SQL injection de uma string
+// SanitizeSQLInput remove SQL injection de uma string
 func SanitizeSQLInput(input string) string {
 	if input == "" {
 		return input
 	}
 
-	// Removendo SQL
+	// Removendo palavras de SQL
 	sqlPattern := regexp.MustCompile(`(?i)(\b(SELECT|INSERT|DELETE|UPDATE|DROP|UNION|--|;|OR|AND)\b)`)
 	clean := sqlPattern.ReplaceAllString(input, "")
 
