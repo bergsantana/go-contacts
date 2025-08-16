@@ -1,10 +1,12 @@
 package usecase
 
 import (
+	"errors"
+
 	"github.com/bergsantana/go-contacts/internal/entity"
 	"github.com/bergsantana/go-contacts/internal/repository"
+	"github.com/bergsantana/go-contacts/pkg/validate"
 )
-
 
 type ContactUsecase struct {
 	repo repository.ContactRepository
@@ -23,10 +25,20 @@ func (uc *ContactUsecase) GetContactByID(id uint) (*entity.Contact, error) {
 }
 
 func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
+	if contact.CPF != nil && *contact.CPF != "" {
+		if !validate.IsValidCPF(*contact.CPF) {
+			return errors.New("invalid CPF")
+		}
+	}
 	return uc.repo.Create(contact)
 }
 
 func (uc *ContactUsecase) UpdateContact(contact *entity.Contact) error {
+	if contact.CPF != nil && *contact.CPF != "" {
+		if !validate.IsValidCPF(*contact.CPF) {
+			return errors.New("invalid CPF")
+		}
+	}
 	return uc.repo.Update(contact)
 }
 
