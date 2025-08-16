@@ -53,8 +53,8 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 
 ### Clonar o repositório
 ```bash
-git clone [https://github.com/yourusername/contacts-api.git](https://github.com/bergsantana/go-contacts.git)
-cd contacts-api
+git clone https://github.com/bergsantana/go-contacts.git 
+cd go-contacts
 ```
 
  
