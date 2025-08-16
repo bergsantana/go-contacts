@@ -1,7 +1,7 @@
 # 📇 API REST de Contatos
 
 Uma API REST em Go com arquitetura limpa para gerenciar contatos usando o framework [Fiber](https://gofiber.io/) e SQLite como banco de dados.  
-Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões brasileiros), formatação de número de telefone, sanitização contra XSS e SQL injection, e um log de inicialização elegante mostrando todos os endpoints disponíveis.
+Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões brasileiros), formatação de número de telefone, sanitização contra XSS e SQL injection.
 
 ---
 
@@ -33,7 +33,7 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 ├── pkg
 │   ├── database              # Conexão ao banco dados
 │   ├── formatters            # Formatação de telefone, etc.
-│   ├── middlwares            # Sanitização de json
+│   ├── middlwares            # Aplica sanitização de json
 │   ├── sanitizer             # Sanitização SQL & XSS
 │   ├── validators            # Validação de CPF/CNPJ
 │   └── seed                  # Seed de contatos de exemplo
