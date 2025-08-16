@@ -10,13 +10,10 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 - **Banco SQLite** (embutido, sem necessidade de configuração)
 - **Framework Fiber** para alta performance em HTTP
 - **CRUD de Contatos**
-- **Email único por contato**
 - **Validação de CPF & CNPJ** (algoritmo oficial brasileiro)
 - **Formatação de telefone** para `(XX) X XXXX-XXXX`
-- **Campo de endereço** para contatos
 - **Sanitização SQL** em todas as entradas do usuário
 - **Prevenção XSS** em strings
-- **Log de inicialização elegante** que lista todos os endpoints disponíveis
 
 ---
 
