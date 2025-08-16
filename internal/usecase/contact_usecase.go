@@ -7,6 +7,7 @@ import (
 	"github.com/bergsantana/go-contacts/internal/entity"
 	"github.com/bergsantana/go-contacts/internal/repository"
 	"github.com/bergsantana/go-contacts/pkg/formatters"
+	"github.com/bergsantana/go-contacts/pkg/sanitize"
 	"github.com/bergsantana/go-contacts/pkg/validate"
 )
 
@@ -51,6 +52,13 @@ func (uc *ContactUsecase) DeleteContact(id uint) error {
 }
 
 func cleanAndValidateFields(contact *entity.Contact) error {
+	// Sanitizar dados para prevenir SQL Injection
+	contact.Name = sanitize.SanitizeSQLInput(contact.Name)
+	contact.Email = sanitize.SanitizeSQLInput(contact.Email)
+	if contact.Address != nil && *contact.Address != "" {
+		*contact.Address = sanitize.SanitizeSQLInput(*contact.Address)
+	}
+
 	// Valida CPF
 	if contact.CPF != nil && *contact.CPF != "" {
 		if !validate.IsValidCPF(*contact.CPF) {
@@ -73,5 +81,6 @@ func cleanAndValidateFields(contact *entity.Contact) error {
 		}
 		contact.Phone = formatted
 	}
+
 	return nil
 }

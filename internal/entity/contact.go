@@ -5,7 +5,7 @@ type Contact struct {
 	Name    string  `json:"name"`
 	Email   string  `json:"email" gorm:"unique"`
 	Phone   string  `json:"phone" gorm:"unique"`
-	CPF     *string `json:"cpf,omitempty" gorm:"unique"`  // Nullable
-	CNPJ    *string `json:"cnpj,omitempty" gorm:"unique"` // Nullable
-	Address *string `json:"address,omitempty"`            // Nullable
+	CPF     *string `json:"cpf,omitempty" gorm:"unique"`  // Opcional
+	CNPJ    *string `json:"cnpj,omitempty" gorm:"unique"` // Opcional
+	Address *string `json:"address,omitempty"`            // Opcional
 }
