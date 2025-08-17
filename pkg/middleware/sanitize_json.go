@@ -1,16 +1,12 @@
 package middleware
 
 import (
-	// "bytes"
 	"encoding/json"
-	// "io"
-	//"net/http"
 
 	"github.com/bergsantana/go-contacts/pkg/sanitize"
 	"github.com/gofiber/fiber/v2"
 )
 
-// recursivelySanitize sanitizes all string values in JSON maps/arrays
 func recursivelySanitize(data interface{}) interface{} {
 	switch v := data.(type) {
 	case string:
@@ -32,7 +28,7 @@ func recursivelySanitize(data interface{}) interface{} {
 
 func SanitizeJSONBody() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// Only sanitize JSON requests
+		// Sanitizar body de requests com json
 		if c.Get("Content-Type") == "application/json" {
 			body := c.Body()
 			if len(body) > 0 {
@@ -40,7 +36,6 @@ func SanitizeJSONBody() fiber.Handler {
 				if err := json.Unmarshal(body, &data); err == nil {
 					data = recursivelySanitize(data)
 
-					// Re-marshal and replace body
 					newBody, _ := json.Marshal(data)
 					c.Request().SetBodyRaw(newBody)
 				}

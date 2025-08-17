@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// IsValidCPF valida o CPF calculando os dois ultimos digitos e checando se estão de acordo
+// Valida o CPF calculando os dois ultimos digitos e checando se estão de acordo
 func IsValidCPF(cpf string) bool {
 	// Usar apenas digitos do CPF
 	re := regexp.MustCompile(`[^0-9]`)

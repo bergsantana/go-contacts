@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// SanitizeSQLInput remove SQL injection de uma string
+// Remove SQL injection de uma string
 func SanitizeSQLInput(input string) string {
 	if input == "" {
 		return input

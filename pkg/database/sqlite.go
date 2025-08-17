@@ -9,13 +9,13 @@ import (
 )
 
 func NewSQLiteDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("contacts.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("db/contacts.db"), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to database: ", err)
+		log.Fatal("Falha ao conectar ao banco de dados: ", err)
 	}
 
 	if err := db.AutoMigrate(&entity.Contact{}); err != nil {
-		log.Fatal("Failed to migrate database:", err)
+		log.Fatal("Falha ao executar migrations:", err)
 	}
 
 	return db

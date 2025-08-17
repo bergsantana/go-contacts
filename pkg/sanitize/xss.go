@@ -4,7 +4,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-// Removes all HTML tags, leaving only plain text
+// Remover HTML por texto simples
 func StrictHTML(input string) string {
 	p := bluemonday.StrictPolicy()
 

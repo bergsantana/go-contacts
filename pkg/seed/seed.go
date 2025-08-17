@@ -27,7 +27,7 @@ func SeedContacts(db *gorm.DB) {
 			Email:   "contato@techsolutions.com.br",
 			CPF:     nil,
 			CNPJ:    ptrString("70.958.874/0001-31"),
-			Phone:   "1132567890",
+			Phone:   "11998567890",
 			Address: ptrString("Avenida Paulista, 1500, São Paulo - SP"),
 		},
 		{
@@ -49,7 +49,7 @@ func SeedContacts(db *gorm.DB) {
 		{
 			Name:    "Carlos Souza",
 			Email:   "carlos.souza@example.com",
-			CPF:     ptrString("904.278.000-21"),
+			CPF:     ptrString("221.564.340-42"),
 			CNPJ:    nil,
 			Phone:   "11976543210",
 			Address: ptrString("Rua Azul, 78, Campinas - SP"),

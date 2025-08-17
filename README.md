@@ -35,7 +35,7 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 │   ├── validators            # Validação de CPF/CNPJ
 │   └── seed                  # Seed de contatos de exemplo
 ├── Dockerfile
-├── docker-compose.yml
+├── docker-compose.yml        # Containers de seed e aplicação
 ├── go.mod
 ├── go.sum
 └── README.md
@@ -59,13 +59,14 @@ cd go-contacts
 
  
 
-###  Subir o container com seed
+###  Subir o containers
+Executa seed -> go-api
 ```bash
 docker compose up -d
 ```
  
 
-Você verá um **log de inicialização elegante** com todos os endpoints disponíveis.
+Você verá um **log de inicialização** com todos os endpoints disponíveis.
 
 ---
 

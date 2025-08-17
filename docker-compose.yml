@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  seed:
+    build: .
+    container_name: contacts-seed
+    command: ["go", "run", "cmd/main.go", "seed"]
+    volumes:
+      - contacts-db:/app/db
+    depends_on: []
+    restart: "no"
+
+  contacts-api:
+    build: .
+    container_name: contacts-api
+    ports:
+      - "3000:3000"                          
+    environment:
+      - GO_ENV=development
+    command: ["go", "run", "cmd/main.go"]
+    volumes:
+      - contacts-db:/app/db
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+  
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  contacts-db:
+    driver: local

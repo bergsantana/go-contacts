@@ -14,7 +14,6 @@ func FormatPhoneNumber(phone string) (string, error) {
 		return "", fmt.Errorf("telefone deve conter 11 digitos")
 	}
 
-	// Apply formatting
 	formatted := fmt.Sprintf("(%s) %s %s-%s",
 		phone[0:2], // DDD
 		phone[2:3], // 9
