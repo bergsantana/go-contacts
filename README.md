@@ -180,6 +180,12 @@ GET /contacts/cnpj/45987654000132
 
 ---
 
+### Demo com Postman
+<img width="644" height="758" alt="image" src="https://github.com/user-attachments/assets/be550448-fcc9-4466-8a74-1434438cd1a4" />
+<img width="634" height="546" alt="image" src="https://github.com/user-attachments/assets/9c276270-00ef-4ae7-9f55-67370d136813" />
+
+
+
 ## 🛠 Desenvolvimento
 
  ```bash
