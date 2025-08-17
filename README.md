@@ -46,6 +46,7 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 ## 📦 Requisitos
 - [Go 1.21+](https://go.dev/dl/)
 - Docker e Compose
+- GCC
 
 ---
 
@@ -161,8 +162,16 @@ GET /contacts/cnpj/45987654000132
 ---
 
 ## 🛠 Desenvolvimento
+
+ ```bash
+$env:CGO_ENABLED = 1
+```
+
  ```bash
 go run cmd/main.go seed
+ ```
+ ```bash
+
 go run cmd/main.go
 ```
 
