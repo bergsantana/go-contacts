@@ -29,21 +29,21 @@ func main() {
 	// Middleware
 	app.Use(middleware.SanitizeJSONBody())
 	app.Use(limiter.New(limiter.Config{
-		Max:        5,               // Máximo de requests for minuto
+		Max:        15,              // Máximo de requests for minuto
 		Expiration: 1 * time.Minute, // Tempo
 		KeyGenerator: func(c *fiber.Ctx) string {
 			return c.IP()
 		},
 		LimitReached: func(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
-				"error": "Too many requests. Please try again later.",
+				"error": "Limite de 15 requisições  por minuto atingido. Tente novamente mais tarde",
 			})
 		},
 	}))
 
 	// Rotas
 	http.NewContactHandler(app, uc)
-	fmt.Println("\n📌 Available Endpoints:")
+	fmt.Println("\n📌 Endpoints disponíveis:")
 	for _, route := range app.GetRoutes(true) {
 		fmt.Printf("   [%s] %s\n", route.Method, route.Path)
 	}

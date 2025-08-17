@@ -44,7 +44,7 @@ func (uc *ContactUsecase) GetByCNPJ(cnpj string) (*entity.Contact, error) {
 func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
 	err := cleanAndValidateFields(contact, uc)
 	if err != nil {
-		fmt.Println("Erro ao atualizar contato: ", err)
+		fmt.Println("Erro ao criar contato: ", err)
 		return err
 	}
 	return uc.repo.Create(contact)
@@ -66,7 +66,12 @@ func (uc *ContactUsecase) DeleteContact(id uint) error {
 }
 
 func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase) error {
-	// Sanitizar dados para prevenir SQL Injection
+	// Sanitização de XSS
+	contact.Name = sanitize.StrictHTML(contact.Name)
+	contact.Email = sanitize.StrictHTML(contact.Email)
+	contact.Phone = sanitize.StrictHTML(contact.Phone)
+
+	// Sanitizar de SQL Injection
 	contact.Name = sanitize.SanitizeSQLInput(contact.Name)
 	contact.Email = sanitize.SanitizeSQLInput(contact.Email)
 	if contact.Address != nil && *contact.Address != "" {

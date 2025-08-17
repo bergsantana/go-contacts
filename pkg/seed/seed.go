@@ -59,9 +59,9 @@ func SeedContacts(db *gorm.DB) {
 	for _, contact := range contacts {
 
 		if err := uc.CreateContact(&contact); err != nil {
-			log.Printf("Failed to create contact %s: %v\n", contact.Email, err)
+			log.Printf("Falha ao conectar ao banco de dados %s: %v\n", contact.Email, err)
 		} else {
-			log.Printf("Inserted contact %s successfully.\n", contact.Email)
+			log.Printf("Contato inserido com sucesso ->  %s.\n", contact.Email)
 		}
 	}
 }
