@@ -46,9 +46,27 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 ## 📦 Requisitos
 - [Go 1.21+](https://go.dev/dl/)
 - Docker e Compose
-- GCC
+ 
 
 ---
+
+
+## 👉 Bibliotecas utilizadas
+- Fiber
+  - Framework web de alta performance para construir APIs REST em Go.
+  - Manipulação de requisições/respostas em JSON
+  - Middlewares (ex: rate limiting, logging)
+  - Inspirado no Express.js, simples e rápido.
+- Bluemonday
+  - Segurança contra XSS (Cross-Site Scripting).
+  - Usado para sanitizar entradas do usuário antes de salvar no banco ou retornar para o cliente.
+- Gorm
+ - ORM para interagir com o banco de dados de forma simples e segura.
+ - Migrações
+ - Helpers de CRUD
+ - Prepared statements → proteção contra SQL Injection
+---
+
 
 ## 🚀 Executando Localmente
 
