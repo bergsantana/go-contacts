@@ -59,17 +59,17 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
   - Middlewares (ex: rate limiting, logging)
   - Inspirado no Express.js, simples e rápido.
 - Bluemonday
-  - Segurança contra XSS (Cross-Site Scripting).
-  - Usado para sanitizar entradas do usuário antes de salvar no banco ou retornar para o cliente.
+   - Segurança contra XSS (Cross-Site Scripting).
+   - Usado para sanitizar entradas do usuário antes de salvar no banco ou retornar para o cliente.
 - Gorm
- - ORM para interagir com o banco de dados de forma simples e segura.
- - Migrações
- - Helpers de CRUD
- - Prepared statements → proteção contra SQL Injection
+  - ORM para interagir com o banco de dados de forma simples e segura.
+  - Migrações
+  - Helpers de CRUD
+  - Prepared statements → proteção contra SQL Injection
 - Jaeger
- - Mostrando onde sua API realmente gasta tempo e ajudando a debugar problemas complexos que logs sozinhos não resolvem.
- - Detecção de anomalias.
- - Métricas de latência
+  - Mostrando onde sua API realmente gasta tempo e ajudando a debugar problemas complexos que logs sozinhos não resolvem.
+  - Detecção de anomalias.
+  - Métricas de latência
 ---
 
 
