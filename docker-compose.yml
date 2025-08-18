@@ -30,7 +30,12 @@ services:
     restart: always
     ports:
       - "8080:8080"
-
+  jaeger:
+    image: jaegertracing/all-in-one:1.61.0
+    ports:
+      - "16686:16686"    
+      - "14268:14268"   
+      - "6831:6831/udp"  
 volumes:
   contacts-db:
     driver: local

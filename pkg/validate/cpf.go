@@ -1,18 +1,36 @@
 package validate
 
 import (
+	"context"
+	"fmt"
+	"log"
 	"regexp"
 	"strconv"
+	"time"
+
+	"go.opentelemetry.io/otel"
 )
 
 // Valida o CPF calculando os dois ultimos digitos e checando se estão de acordo
-func IsValidCPF(cpf string) bool {
+func IsValidCPF(cpf string, ctx context.Context) bool {
+	if ctx == nil {
+		return true
+	}
+	tracer := otel.Tracer("contacts-service")
+	_, span := tracer.Start(ctx, "validateCPF")
+	defer span.End()
+
+	start := time.Now()
+	log.Printf("[TRACE] Validando CPF: %s", cpf)
+
 	// Usar apenas digitos do CPF
 	re := regexp.MustCompile(`[^0-9]`)
 	cpf = re.ReplaceAllString(cpf, "")
 
 	// Deve ser de 11 digitos
 	if len(cpf) != 11 {
+		span.RecordError(fmt.Errorf("CPF inválido (tamanho)"))
+		log.Printf("[TRACE] CPF inválido: %s | Tempo: %s", cpf, time.Since(start))
 		return false
 	}
 
@@ -53,6 +71,6 @@ func IsValidCPF(cpf string) bool {
 	if secondCheck != int(cpf[10]-'0') {
 		return false
 	}
-
+	log.Printf("[TRACE] CPF válido: %s | Tempo: %s", cpf, time.Since(start))
 	return true
 }

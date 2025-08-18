@@ -65,7 +65,7 @@ func (h *ContactHandler) CreateContact(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "Erro ao tratar campos criando contato" + err.Error()})
 	}
 
-	if err := h.usecase.CreateContact(&contact); err != nil {
+	if err := h.usecase.CreateContact(&contact, c); err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Erro ao criar contato no banco" + err.Error()})
 	}
 	return c.Status(201).JSON(contact)
@@ -79,7 +79,7 @@ func (h *ContactHandler) UpdateContact(c *fiber.Ctx) error {
 	}
 
 	contact.ID = uint(id)
-	if err := h.usecase.UpdateContact(&contact); err != nil {
+	if err := h.usecase.UpdateContact(&contact, c); err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Erro ao atualizar contato:" + err.Error()})
 	}
 	return c.JSON(contact)

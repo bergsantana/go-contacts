@@ -8,16 +8,21 @@ import (
 
 	"github.com/bergsantana/go-contacts/internal/delivery/http"
 	"github.com/bergsantana/go-contacts/internal/repository"
+	"github.com/bergsantana/go-contacts/internal/tracing"
 	"github.com/bergsantana/go-contacts/internal/usecase"
 	"github.com/bergsantana/go-contacts/pkg/database"
 	"github.com/bergsantana/go-contacts/pkg/middleware"
 	"github.com/bergsantana/go-contacts/pkg/seed"
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"gorm.io/gorm"
 )
 
 func main() {
+	shutdown := tracing.InitTracer()
+	defer shutdown()
 	db := database.NewSQLiteDB()
 	handleArgs(db)
 
@@ -27,6 +32,7 @@ func main() {
 	app := fiber.New()
 
 	// Middleware
+	app.Use(otelfiber.Middleware())
 	app.Use(middleware.SanitizeJSONBody())
 	app.Use(limiter.New(limiter.Config{
 		Max:        15,              // Máximo de requests for minuto
@@ -57,7 +63,6 @@ func handleArgs(db *gorm.DB) {
 	args := flag.Args()
 
 	if len(args) >= 1 {
-		fmt.Println("ARGS", args)
 		switch args[0] {
 		case "seed":
 			seed.SeedContacts(db)

@@ -1,16 +1,33 @@
 package validate
 
 import (
+	"context"
+	"fmt"
+	"log"
 	"regexp"
 	"strconv"
+	"time"
+
+	"go.opentelemetry.io/otel"
 )
 
-func IsValidCNPJ(cnpj string) bool {
+func IsValidCNPJ(cnpj string, ctx context.Context) bool {
+	if ctx == nil {
+		return true
+	}
+	tracer := otel.Tracer("contacts-service")
+	_, span := tracer.Start(ctx, "validateCPF")
+	defer span.End()
+
+	start := time.Now()
+	log.Printf("[TRACE] Iniciando validação de CPF: %s", cnpj)
 	re := regexp.MustCompile(`\D`)
 	cnpj = re.ReplaceAllString(cnpj, "")
 
 	// Deverá haver exatos 14 digitos
 	if len(cnpj) != 14 {
+		span.RecordError(fmt.Errorf("CPF inválido (tamanho)"))
+		log.Printf("[TRACE] CNPJ inválido (tamanho incorreto): %s | Tempo: %s", cnpj, time.Since(start))
 		return false
 	}
 
@@ -51,5 +68,13 @@ func IsValidCNPJ(cnpj string) bool {
 		d2 = 11 - remainder
 	}
 
-	return nums[12] == d1 && nums[13] == d2
+	result := nums[12] == d1 && nums[13] == d2
+	if !result {
+		span.RecordError(fmt.Errorf("CPF inválido (digitos)"))
+		return false
+	}
+
+	log.Printf("[TRACE] CNPJ válido: %s | Tempo: %s", cnpj, time.Since(start))
+	return result
+
 }

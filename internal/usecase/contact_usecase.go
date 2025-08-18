@@ -9,6 +9,7 @@ import (
 	"github.com/bergsantana/go-contacts/pkg/formatters"
 	"github.com/bergsantana/go-contacts/pkg/sanitize"
 	"github.com/bergsantana/go-contacts/pkg/validate"
+	"github.com/gofiber/fiber/v2"
 )
 
 type ContactUsecase struct {
@@ -41,8 +42,8 @@ func (uc *ContactUsecase) GetByCNPJ(cnpj string) (*entity.Contact, error) {
 	return uc.repo.GetByCNPJ(cnpj)
 }
 
-func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
-	err := cleanAndValidateFields(contact, uc)
+func (uc *ContactUsecase) CreateContact(contact *entity.Contact, c *fiber.Ctx) error {
+	err := cleanAndValidateFields(contact, uc, c)
 	if err != nil {
 		fmt.Println("Erro ao criar contato: ", err)
 		return err
@@ -50,9 +51,9 @@ func (uc *ContactUsecase) CreateContact(contact *entity.Contact) error {
 	return uc.repo.Create(contact)
 }
 
-func (uc *ContactUsecase) UpdateContact(contact *entity.Contact) error {
+func (uc *ContactUsecase) UpdateContact(contact *entity.Contact, c *fiber.Ctx) error {
 
-	err := cleanAndValidateFields(contact, uc)
+	err := cleanAndValidateFields(contact, uc, c)
 	if err != nil {
 		fmt.Println("Erro ao atualizar contato: ", err)
 		return err
@@ -65,7 +66,7 @@ func (uc *ContactUsecase) DeleteContact(id uint) error {
 	return uc.repo.Delete(id)
 }
 
-func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase) error {
+func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase, c *fiber.Ctx) error {
 	// Sanitização de XSS
 	contact.Name = sanitize.StrictHTML(contact.Name)
 	contact.Email = sanitize.StrictHTML(contact.Email)
@@ -80,7 +81,7 @@ func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase) error {
 
 	// Valida CPF
 	if contact.CPF != nil && *contact.CPF != "" {
-		if !validate.IsValidCPF(*contact.CPF) {
+		if !validate.IsValidCPF(*contact.CPF, c.UserContext()) {
 			return errors.New("CPF invalido: " + *contact.CPF)
 		}
 		existingCPF, _ := uc.repo.GetByCPF(*contact.CPF)
@@ -91,7 +92,7 @@ func cleanAndValidateFields(contact *entity.Contact, uc *ContactUsecase) error {
 
 	// Validata CNPJ
 	if contact.CNPJ != nil && *contact.CNPJ != "" {
-		if !validate.IsValidCNPJ(*contact.CNPJ) {
+		if !validate.IsValidCNPJ(*contact.CNPJ, c.UserContext()) {
 			return errors.New("CNPJ INVALIDO: " + *contact.CNPJ)
 		}
 		existingCNPJ, _ := uc.repo.GetByCNPJ(*contact.CNPJ)
