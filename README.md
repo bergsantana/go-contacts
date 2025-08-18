@@ -24,6 +24,7 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 │   └── main.go               # Ponto de entrada da aplicação
 ├── internal
 │   ├── entity                # Entidades (modelos de domínio)
+│   ├── tracing               # Rastrear a jornada de uma requisição 
 │   ├── repository            # Persistência de dados
 │   ├── usecase               # Lógica de negócio
 │   └── handler               # Handlers HTTP
