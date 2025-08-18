@@ -14,7 +14,7 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
 - **Formatação de telefone** para `(XX) X XXXX-XXXX`
 - **Sanitização SQL** em todas as entradas do usuário
 - **Prevenção XSS** em strings
-
+- **Telemetria** com Jaeger
 ---
 
 ## 🗂 Estrutura do Projeto
@@ -65,6 +65,10 @@ Inclui funcionalidades completas de CRUD, validação de CPF/CNPJ (padrões bras
  - Migrações
  - Helpers de CRUD
  - Prepared statements → proteção contra SQL Injection
+- Jaeger
+ - Mostrando onde sua API realmente gasta tempo e ajudando a debugar problemas complexos que logs sozinhos não resolvem.
+ - Detecção de anomalias.
+ - Métricas de latência
 ---
 
 
